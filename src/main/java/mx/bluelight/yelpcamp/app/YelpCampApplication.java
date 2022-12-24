@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class YelpcampApplication {
+public class YelpCampApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(YelpcampApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(YelpCampApplication.class, args);
+    }
 
 }
