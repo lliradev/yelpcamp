@@ -1,11 +1,11 @@
 package mx.bluelight.yelpcamp.app.config;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@Configurable
-public class RestTemplateConfig {
+@Configuration
+class RestTemplateConfig {
 
     @Bean(name = "restTemplate")
     public RestTemplate restTemplate() {
