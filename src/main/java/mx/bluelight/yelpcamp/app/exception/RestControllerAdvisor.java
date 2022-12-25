@@ -50,6 +50,17 @@ class RestControllerAdvisor {
         return ResponseEntity.internalServerError().body(responseError);
     }
 
+    @ExceptionHandler(CustomBusinessException.class)
+    public ResponseEntity<CommonResponseError> customBusinessExceptionHandler(CustomBusinessException ex) {
+        CommonResponseError responseError = new CommonResponseError();
+
+        responseError.setMessage(ex.getMessage());
+        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
+        responseError.setTimestamp(OffsetDateTime.now());
+
+        return ResponseEntity.status(ex.getHttpStatus()).body(responseError);
+    }
+
     private List<StackTrace> mapperTraces(StackTraceElement[] stackTraceElements) {
         List<StackTrace> traces = new ArrayList<>();
         for (StackTraceElement element : stackTraceElements) {
