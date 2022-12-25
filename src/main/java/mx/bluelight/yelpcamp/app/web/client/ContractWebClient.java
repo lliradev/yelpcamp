@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface ContractRestClient {
+public interface ContractWebClient {
 
     ResponseEntity<List<Contract>> findAll();
 }

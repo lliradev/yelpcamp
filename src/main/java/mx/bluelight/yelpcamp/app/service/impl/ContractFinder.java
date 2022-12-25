@@ -1,11 +1,12 @@
-package mx.bluelight.yelpcamp.app.service;
+package mx.bluelight.yelpcamp.app.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.bluelight.yelpcamp.app.domain.ContractResponse;
 import mx.bluelight.yelpcamp.app.dto.CommonResponse;
 import mx.bluelight.yelpcamp.app.exception.CustomBusinessException;
-import mx.bluelight.yelpcamp.app.helper.ContractMapper;
-import mx.bluelight.yelpcamp.app.web.client.ContractRestClient;
+import mx.bluelight.yelpcamp.app.helper.ContractHelper;
+import mx.bluelight.yelpcamp.app.service.ContractService;
+import mx.bluelight.yelpcamp.app.web.client.ContractWebClient;
 import mx.bluelight.yelpcamp.app.web.client.dto.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,19 +18,20 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ContractFinder {
+class ContractFinder implements ContractService {
 
     @Autowired
-    private ContractRestClient restClient;
+    private ContractWebClient webClient;
 
     @Autowired
-    private ContractMapper contractMapper;
+    private ContractHelper contractHelper;
 
+    @Override
     public CommonResponse<List<ContractResponse>> find() {
-        ResponseEntity<List<Contract>> contracts = restClient.findAll();
+        ResponseEntity<List<Contract>> contracts = webClient.findAll();
 
         if (contracts == null || contracts.getBody() == null || contracts.getBody().isEmpty())
-            return contractMapper.toResponseEmpty();
+            return contractHelper.toResponseEmpty();
 
         List<Contract> list = contracts
             .getBody()
@@ -37,15 +39,16 @@ public class ContractFinder {
             .filter(Contract::getActive)
             .collect(Collectors.toList());
 
-        return contractMapper.toResponse(list);
+        return contractHelper.toResponse(list);
     }
 
+    @Override
     public CommonResponse<ContractResponse> findByContractNumber(Long contractNumber) {
         return this.find()
             .getPayload()
             .stream()
             .filter(contract -> contract.getContractNumber().equals(contractNumber))
-            .map(contractResponse -> contractMapper.toResponse(contractResponse))
+            .map(contractResponse -> contractHelper.toResponse(contractResponse))
             .findFirst()
             .orElseThrow(() -> new CustomBusinessException("Contract number not exists", HttpStatus.OK));
     }

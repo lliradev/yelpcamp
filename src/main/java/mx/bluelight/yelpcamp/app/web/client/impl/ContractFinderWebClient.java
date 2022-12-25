@@ -1,7 +1,7 @@
 package mx.bluelight.yelpcamp.app.web.client.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.bluelight.yelpcamp.app.web.client.ContractRestClient;
+import mx.bluelight.yelpcamp.app.web.client.ContractWebClient;
 import mx.bluelight.yelpcamp.app.web.client.dto.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-class FinderContractRestClient implements ContractRestClient {
+class ContractFinderWebClient implements ContractWebClient {
 
     @Autowired
     @Qualifier("restTemplate")

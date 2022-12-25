@@ -1,4 +1,4 @@
-package mx.bluelight.yelpcamp.app.helper;
+package mx.bluelight.yelpcamp.app.helper.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.bluelight.yelpcamp.app.constant.ResponseCode;
@@ -6,6 +6,7 @@ import mx.bluelight.yelpcamp.app.constant.ResponseMessage;
 import mx.bluelight.yelpcamp.app.constant.Sex;
 import mx.bluelight.yelpcamp.app.domain.ContractResponse;
 import mx.bluelight.yelpcamp.app.dto.CommonResponse;
+import mx.bluelight.yelpcamp.app.helper.ContractHelper;
 import mx.bluelight.yelpcamp.app.web.client.dto.Contract;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,9 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class ContractMapper {
+class ContractMapper implements ContractHelper {
 
+    @Override
     public CommonResponse<ContractResponse> toResponse(ContractResponse responseClient) {
         CommonResponse<ContractResponse> response = new CommonResponse<>();
 
@@ -35,6 +37,7 @@ public class ContractMapper {
         return response;
     }
 
+    @Override
     public CommonResponse<List<ContractResponse>> toResponse(List<Contract> responseClient) {
         CommonResponse<List<ContractResponse>> response = new CommonResponse<>();
 
@@ -60,6 +63,7 @@ public class ContractMapper {
         return response;
     }
 
+    @Override
     public CommonResponse<List<ContractResponse>> toResponseEmpty() {
         CommonResponse<List<ContractResponse>> response = new CommonResponse<>();
 
