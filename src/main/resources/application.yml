@@ -1,5 +1,7 @@
-application:
-    baseUrl: https://63975c7a86d04c7633935b72.mockapi.io/api
-    insurance:
-        url: /insurance
-        contract: ${application.baseUrl.insurance.url}/contract
+spring:
+    application:
+        name: @artifactId@
+        version: @project.version@
+    output:
+        ansi:
+            enabled: ALWAYS

@@ -1,5 +1,6 @@
 package mx.bluelight.yelpcamp.app.dto;
 
+import com.google.gson.Gson;
 import lombok.*;
 
 import java.io.Serializable;
@@ -14,4 +15,8 @@ public class CommonResponse<T> implements Serializable {
     private Integer code;
     private String description;
     private transient T payload;
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
 }

@@ -1,6 +1,6 @@
 package mx.bluelight.yelpcamp.app.web.rest;
 
-import mx.bluelight.yelpcamp.app.domain.Contract;
+import mx.bluelight.yelpcamp.app.domain.ContractResponse;
 import mx.bluelight.yelpcamp.app.dto.CommonResponse;
 import mx.bluelight.yelpcamp.app.service.ContractFinder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ContractRestController {
     private ContractFinder contractFinder;
 
     @GetMapping("/contracts")
-    public ResponseEntity<CommonResponse<List<Contract>>> find() {
+    public ResponseEntity<CommonResponse<List<ContractResponse>>> find() {
         return ResponseEntity.ok(contractFinder.find());
     }
 }
