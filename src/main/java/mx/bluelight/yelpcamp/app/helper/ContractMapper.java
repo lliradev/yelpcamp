@@ -1,6 +1,8 @@
 package mx.bluelight.yelpcamp.app.helper;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.bluelight.yelpcamp.app.constant.ResponseCode;
+import mx.bluelight.yelpcamp.app.constant.ResponseMessage;
 import mx.bluelight.yelpcamp.app.constant.Sex;
 import mx.bluelight.yelpcamp.app.domain.ContractResponse;
 import mx.bluelight.yelpcamp.app.dto.CommonResponse;
@@ -15,9 +17,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ContractMapper {
 
-    private static final String SUCCESS = "Successful request";
-    private static final Number NUMBER_ZERO = 0;
-
     public CommonResponse<ContractResponse> toResponse(ContractResponse responseClient) {
         CommonResponse<ContractResponse> response = new CommonResponse<>();
 
@@ -30,8 +29,8 @@ public class ContractMapper {
         contractResponse.setZipCode(responseClient.getZipCode());
         contractResponse.setContractNumber(responseClient.getContractNumber());
 
-        response.setCode(NUMBER_ZERO.intValue());
-        response.setDescription(SUCCESS);
+        response.setCode(ResponseCode.COMMON_SUCCESS_CODE.intValue());
+        response.setDescription(ResponseMessage.COMMON_SUCCESS_MESSAGE.getMessage());
         response.setPayload(contractResponse);
         return response;
     }
@@ -54,8 +53,8 @@ public class ContractMapper {
             })
             .collect(Collectors.toList());
 
-        response.setCode(NUMBER_ZERO.intValue());
-        response.setDescription(SUCCESS);
+        response.setCode(ResponseCode.COMMON_SUCCESS_CODE.intValue());
+        response.setDescription(ResponseMessage.COMMON_SUCCESS_MESSAGE.getMessage());
         response.setPayload(contracts);
 
         return response;
@@ -64,8 +63,8 @@ public class ContractMapper {
     public CommonResponse<List<ContractResponse>> toResponseEmpty() {
         CommonResponse<List<ContractResponse>> response = new CommonResponse<>();
 
-        response.setCode(NUMBER_ZERO.intValue());
-        response.setDescription(SUCCESS);
+        response.setCode(ResponseCode.COMMON_SUCCESS_CODE.intValue());
+        response.setDescription(ResponseMessage.COMMON_SUCCESS_MESSAGE.getMessage());
         response.setPayload(new ArrayList<>());
 
         return response;
