@@ -18,6 +18,24 @@ public class ContractMapper {
     private static final String SUCCESS = "Successful request";
     private static final Number NUMBER_ZERO = 0;
 
+    public CommonResponse<ContractResponse> toResponse(ContractResponse responseClient) {
+        CommonResponse<ContractResponse> response = new CommonResponse<>();
+
+        ContractResponse contractResponse = new ContractResponse();
+        contractResponse.setContractId(responseClient.getContractId());
+        contractResponse.setFullName(responseClient.getFullName());
+        contractResponse.setSex(responseClient.getSex());
+        contractResponse.setJob(responseClient.getJob());
+        contractResponse.setBirthdate(responseClient.getBirthdate());
+        contractResponse.setZipCode(responseClient.getZipCode());
+        contractResponse.setContractNumber(responseClient.getContractNumber());
+
+        response.setCode(NUMBER_ZERO.intValue());
+        response.setDescription(SUCCESS);
+        response.setPayload(contractResponse);
+        return response;
+    }
+
     public CommonResponse<List<ContractResponse>> toResponse(List<Contract> responseClient) {
         CommonResponse<List<ContractResponse>> response = new CommonResponse<>();
 

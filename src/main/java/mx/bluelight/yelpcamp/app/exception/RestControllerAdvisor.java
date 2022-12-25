@@ -1,6 +1,7 @@
 package mx.bluelight.yelpcamp.app.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.bluelight.yelpcamp.app.dto.CommonResponse;
 import mx.bluelight.yelpcamp.app.dto.CommonResponseError;
 import mx.bluelight.yelpcamp.app.dto.StackTrace;
 import org.springframework.http.ResponseEntity;
@@ -51,14 +52,13 @@ class RestControllerAdvisor {
     }
 
     @ExceptionHandler(CustomBusinessException.class)
-    public ResponseEntity<CommonResponseError> customBusinessExceptionHandler(CustomBusinessException ex) {
-        CommonResponseError responseError = new CommonResponseError();
+    public ResponseEntity<CommonResponse<Object>> customBusinessExceptionHandler(CustomBusinessException ex) {
+        CommonResponse<Object> response = new CommonResponse<>();
 
-        responseError.setMessage(ex.getMessage());
-        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-        responseError.setTimestamp(OffsetDateTime.now());
+        response.setCode(ex.getCode());
+        response.setDescription(ex.getMessage());
 
-        return ResponseEntity.status(ex.getHttpStatus()).body(responseError);
+        return ResponseEntity.status(ex.getHttpStatus()).body(response);
     }
 
     private List<StackTrace> mapperTraces(StackTraceElement[] stackTraceElements) {

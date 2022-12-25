@@ -3,10 +3,12 @@ package mx.bluelight.yelpcamp.app.service;
 import lombok.extern.slf4j.Slf4j;
 import mx.bluelight.yelpcamp.app.domain.ContractResponse;
 import mx.bluelight.yelpcamp.app.dto.CommonResponse;
+import mx.bluelight.yelpcamp.app.exception.CustomBusinessException;
 import mx.bluelight.yelpcamp.app.helper.ContractMapper;
 import mx.bluelight.yelpcamp.app.web.client.ContractRestClient;
 import mx.bluelight.yelpcamp.app.web.client.dto.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,15 @@ public class ContractFinder {
             .collect(Collectors.toList());
 
         return contractMapper.toResponse(list);
+    }
+
+    public CommonResponse<ContractResponse> findByContractNumber(Long contractNumber) {
+        return this.find()
+            .getPayload()
+            .stream()
+            .filter(contract -> contract.getContractNumber().equals(contractNumber))
+            .map(contractResponse -> contractMapper.toResponse(contractResponse))
+            .findFirst()
+            .orElseThrow(() -> new CustomBusinessException("Contract number not exists", HttpStatus.OK));
     }
 }
