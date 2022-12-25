@@ -2,6 +2,11 @@ spring:
     application:
         name: @artifactId@
         version: @project.version@
+        baseUrl: https://63975c7a86d04c7633935b72.mockapi.io/api
+        insurance:
+            url: /insurance
+            contract: ${spring.application.baseUrl}${spring.application.insurance.url}/contract
+            policies: ${spring.application.baseUrl}${spring.application.insurance.url}/policies
     output:
         ansi:
             enabled: ALWAYS

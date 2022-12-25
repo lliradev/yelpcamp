@@ -61,6 +61,18 @@ class RestControllerAdvisor {
         return ResponseEntity.status(ex.getHttpStatus()).body(response);
     }
 
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<CommonResponseError> numberFormatExceptionHandler(NumberFormatException ex) {
+        CommonResponseError responseError = new CommonResponseError();
+        final String detail = "Failed to convert value of type 'String' to required type number.";
+
+        responseError.setMessage(detail.concat(" ").concat(ex.getMessage()));
+        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
+        responseError.setTimestamp(OffsetDateTime.now());
+
+        return ResponseEntity.badRequest().body(responseError);
+    }
+
     private List<StackTrace> mapperTraces(StackTraceElement[] stackTraceElements) {
         List<StackTrace> traces = new ArrayList<>();
         for (StackTraceElement element : stackTraceElements) {

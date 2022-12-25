@@ -5,6 +5,7 @@ import mx.bluelight.yelpcamp.app.web.client.ContractRestClient;
 import mx.bluelight.yelpcamp.app.web.client.dto.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -22,9 +23,11 @@ class FinderContractRestClient implements ContractRestClient {
     @Qualifier("restTemplate")
     private RestTemplate restTemplate;
 
+    @Value("${spring.application.insurance.contract}")
+    private String url;
+
     @Override
     public ResponseEntity<List<Contract>> findAll() {
-        final String url = "https://63975c7a86d04c7633935b72.mockapi.io/api/insurance/contract";
         HttpEntity<?> empty = HttpEntity.EMPTY;
         long start = System.nanoTime();
         ResponseEntity<List<Contract>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, empty,
