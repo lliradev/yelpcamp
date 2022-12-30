@@ -1,4 +1,4 @@
-package mx.bluelight.yelpcamp.app.dto;
+package mx.bluelight.yelpcamp.app.common.dto;
 
 import lombok.*;
 

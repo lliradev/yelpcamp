@@ -1,4 +1,4 @@
-package mx.bluelight.yelpcamp.app.dto;
+package mx.bluelight.yelpcamp.app.common.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @Schema(description = "Global response")
-public class CommonResponse<T> implements Serializable {
+public class ResponseBase<T> implements Serializable {
     private static final long serialVersionUID = -7653142642583528894L;
     @Schema(description = "Response code", example = "0")
     private Integer code;

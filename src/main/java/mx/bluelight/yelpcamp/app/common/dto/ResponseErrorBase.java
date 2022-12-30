@@ -1,4 +1,4 @@
-package mx.bluelight.yelpcamp.app.dto;
+package mx.bluelight.yelpcamp.app.common.dto;
 
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CommonResponseError implements Serializable {
+public class ResponseErrorBase implements Serializable {
     private static final long serialVersionUID = -745399347174804245L;
     private UUID requestId = UUID.randomUUID();
     private String message;
