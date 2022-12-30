@@ -1,8 +1,8 @@
 package mx.bluelight.yelpcamp.app.common.web;
 
 import mx.bluelight.yelpcamp.app.common.dto.ResponseBase;
-import mx.bluelight.yelpcamp.app.constant.ResponseCode;
-import mx.bluelight.yelpcamp.app.constant.ResponseMessage;
+import mx.bluelight.yelpcamp.app.common.constant.ResponseCode;
+import mx.bluelight.yelpcamp.app.common.constant.ResponseMessage;
 import org.springframework.http.ResponseEntity;
 
 public class BaseRestController {

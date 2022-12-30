@@ -1,7 +1,7 @@
 package mx.bluelight.yelpcamp.app.exception;
 
 import lombok.Getter;
-import mx.bluelight.yelpcamp.app.constant.ResponseCode;
+import mx.bluelight.yelpcamp.app.common.constant.ResponseCode;
 import org.springframework.http.HttpStatus;
 
 @Getter

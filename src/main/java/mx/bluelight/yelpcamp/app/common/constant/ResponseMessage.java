@@ -1,4 +1,4 @@
-package mx.bluelight.yelpcamp.app.constant;
+package mx.bluelight.yelpcamp.app.common.constant;
 
 import lombok.Getter;
 
