@@ -2,7 +2,9 @@ package mx.bluelight.yelpcamp.app.web.client.impl;
 
 import mx.bluelight.yelpcamp.app.common.web.BaseWebClient;
 import mx.bluelight.yelpcamp.app.web.client.ContractWebClient;
-import mx.bluelight.yelpcamp.app.web.client.dto.Contract;
+import mx.bluelight.yelpcamp.app.web.client.dto.ContractRequestClient;
+import mx.bluelight.yelpcamp.app.web.client.dto.ContractResponseClient;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
-class ContractFinderWebClient extends BaseWebClient implements ContractWebClient {
+@Qualifier("contractFinderWebClient")
+class FinderContractWebClient extends BaseWebClient implements ContractWebClient {
 
     @Autowired
     @Qualifier("restTemplate")
@@ -27,9 +30,14 @@ class ContractFinderWebClient extends BaseWebClient implements ContractWebClient
     private String url;
 
     @Override
-    public ResponseEntity<List<Contract>> findAll() {
+    public ResponseEntity<List<ContractResponseClient>> findAll() {
         HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(getHeaders());
-        return restTemplate.exchange(url, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Contract>>() {
+        return restTemplate.exchange(url, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ContractResponseClient>>() {
         });
+    }
+
+    @Override
+    public ResponseEntity<ContractResponseClient> save(ContractRequestClient requestClient) {
+        throw new NotImplementedException("Method not implement");
     }
 }

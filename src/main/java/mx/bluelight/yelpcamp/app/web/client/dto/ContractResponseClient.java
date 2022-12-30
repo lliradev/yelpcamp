@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Contract implements Serializable {
+public class ContractResponseClient implements Serializable {
     private static final long serialVersionUID = -2292234754467387640L;
     private String id;
     private String fullName;
