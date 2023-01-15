@@ -8,12 +8,12 @@ import mx.bluelight.yelpcamp.app.exception.CustomBusinessException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,6 @@ class RestControllerAdvisor {
 
         responseError.setMessage(ex.getMessage());
         responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-        responseError.setTimestamp(OffsetDateTime.now());
 
         return ResponseEntity.status(ex.getStatusCode()).body(responseError);
     }
@@ -38,7 +37,6 @@ class RestControllerAdvisor {
 
         responseError.setMessage(ex.getMessage());
         responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-        responseError.setTimestamp(OffsetDateTime.now());
 
         return ResponseEntity.status(ex.getStatusCode()).body(responseError);
     }
@@ -49,7 +47,6 @@ class RestControllerAdvisor {
 
         responseError.setMessage(ex.getMessage());
         responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-        responseError.setTimestamp(OffsetDateTime.now());
 
         return ResponseEntity.internalServerError().body(responseError);
     }
@@ -71,7 +68,6 @@ class RestControllerAdvisor {
 
         responseError.setMessage(detail.concat(" ").concat(ex.getMessage()));
         responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-        responseError.setTimestamp(OffsetDateTime.now());
 
         return ResponseEntity.badRequest().body(responseError);
     }
@@ -82,9 +78,15 @@ class RestControllerAdvisor {
 
         responseError.setMessage(ex.getMessage());
         responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-        responseError.setTimestamp(OffsetDateTime.now());
 
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(responseError);
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ResponseErrorBase> missingRequestHeaderExceptionHandler(MissingRequestHeaderException ex) {
+        ResponseErrorBase responseError = new ResponseErrorBase();
+        responseError.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
     private List<StackTrace> mapperTraces(StackTraceElement[] stackTraceElements) {
