@@ -21,4 +21,9 @@ public class SimpleCarService implements CarService {
         log.info("Speed default: {}", SPEED_DEFAULT);
         log.info("Speed: {}", speed);
     }
+
+    @Override
+    public void drive(Integer gear) {
+        throw new NotImplementedException("Method not implement");
+    }
 }

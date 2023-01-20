@@ -1,9 +1,6 @@
 package mx.bluelight.yelpcamp.app.common.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -14,17 +11,12 @@ import java.util.UUID;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class ResponseErrorBase implements Serializable {
     private static final long serialVersionUID = -745399347174804245L;
-    private UUID requestId;
+    private UUID requestId = UUID.randomUUID();
     private String message;
-    private OffsetDateTime timestamp;
-    private List<StackTrace> traces;
-
-    public ResponseErrorBase() {
-        this.requestId = UUID.randomUUID();
-        this.timestamp = OffsetDateTime.now();
-        this.traces = Collections.emptyList();
-    }
+    private OffsetDateTime timestamp = OffsetDateTime.now();
+    private List<StackTrace> traces = Collections.emptyList();
 }

@@ -1,11 +1,11 @@
 package mx.bluelight.yelpcamp.app.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.bluelight.yelpcamp.app.common.constant.ResponseCode;
 import mx.bluelight.yelpcamp.app.common.dto.ResponseBase;
 import mx.bluelight.yelpcamp.app.common.dto.ResponseErrorBase;
 import mx.bluelight.yelpcamp.app.common.dto.StackTrace;
 import mx.bluelight.yelpcamp.app.exception.CustomBusinessException;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -22,7 +22,7 @@ import java.util.List;
 class RestControllerAdvisor {
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<ResponseErrorBase> httpClientErrorExceptionHandler(HttpClientErrorException ex) {
+    public ResponseEntity<ResponseErrorBase> exceptionHandler(HttpClientErrorException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
 
         responseError.setMessage(ex.getMessage());
@@ -32,7 +32,7 @@ class RestControllerAdvisor {
     }
 
     @ExceptionHandler(HttpServerErrorException.class)
-    public ResponseEntity<ResponseErrorBase> httpServerErrorExceptionHandler(HttpServerErrorException ex) {
+    public ResponseEntity<ResponseErrorBase> exceptionHandler(HttpServerErrorException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
 
         responseError.setMessage(ex.getMessage());
@@ -42,7 +42,7 @@ class RestControllerAdvisor {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ResponseErrorBase> nullPointerExceptionHandler(NullPointerException ex) {
+    public ResponseEntity<ResponseErrorBase> exceptionHandler(NullPointerException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
 
         responseError.setMessage(ex.getMessage());
@@ -52,7 +52,7 @@ class RestControllerAdvisor {
     }
 
     @ExceptionHandler(CustomBusinessException.class)
-    public ResponseEntity<ResponseBase<Object>> customBusinessExceptionHandler(CustomBusinessException ex) {
+    public ResponseEntity<ResponseBase<Object>> exceptionHandler(CustomBusinessException ex) {
         ResponseBase<Object> response = new ResponseBase<>();
 
         response.setCode(ex.getCode());
@@ -62,7 +62,7 @@ class RestControllerAdvisor {
     }
 
     @ExceptionHandler(NumberFormatException.class)
-    public ResponseEntity<ResponseErrorBase> numberFormatExceptionHandler(NumberFormatException ex) {
+    public ResponseEntity<ResponseErrorBase> exceptionHandler(NumberFormatException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
         final String detail = "Failed to convert value of type 'String' to required type number.";
 
@@ -72,21 +72,21 @@ class RestControllerAdvisor {
         return ResponseEntity.badRequest().body(responseError);
     }
 
-    @ExceptionHandler(NotImplementedException.class)
-    public ResponseEntity<ResponseErrorBase> notImplementedExceptionHandler(NotImplementedException ex) {
-        ResponseErrorBase responseError = new ResponseErrorBase();
-
-        responseError.setMessage(ex.getMessage());
-        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(responseError);
-    }
-
     @ExceptionHandler(MissingRequestHeaderException.class)
-    public ResponseEntity<ResponseErrorBase> missingRequestHeaderExceptionHandler(MissingRequestHeaderException ex) {
+    public ResponseEntity<ResponseErrorBase> exceptionHandler(MissingRequestHeaderException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
         responseError.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseBase<Object>> exceptionHandler(IllegalArgumentException ex) {
+        ResponseBase<Object> response = new ResponseBase<>();
+
+        response.setCode(ResponseCode.COMMON_ERROR_CODE.intValue());
+        response.setDescription(ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     private List<StackTrace> mapperTraces(StackTraceElement[] stackTraceElements) {

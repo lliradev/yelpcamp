@@ -8,6 +8,8 @@ public interface CarService {
 
     void drive(int speed);
 
+    void drive(Integer gear);
+
     default String speed() {
         return "Speed car";
     }
