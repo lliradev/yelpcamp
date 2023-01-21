@@ -15,10 +15,6 @@ app:
         port: 22
         folderHome: home
         channel: sftp
-    baseUrl: https://63975c7a86d04c7633935b72.mockapi.io/api
-    insurance:
-        url: /insurance
-        contract: ${app.baseUrl}${app.insurance.url}/contract
 
 springdoc:
     api-docs:
