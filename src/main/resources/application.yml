@@ -1,3 +1,6 @@
+server:
+    port: 8082
+
 spring:
     application:
         name: @artifactId@
@@ -7,6 +10,11 @@ spring:
             enabled: ALWAYS
 
 app:
+    server:
+        hostname: bluelight.mx
+        port: 22
+        folderHome: home
+        channel: sftp
     baseUrl: https://63975c7a86d04c7633935b72.mockapi.io/api
     insurance:
         url: /insurance
