@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,13 @@ class RestControllerAdvisor {
 
     @ExceptionHandler(MissingRequestHeaderException.class)
     public ResponseEntity<ResponseErrorBase> exceptionHandler(MissingRequestHeaderException ex) {
+        ResponseErrorBase responseError = new ResponseErrorBase();
+        responseError.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ResponseErrorBase> exceptionHandler(MissingServletRequestPartException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
         responseError.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);

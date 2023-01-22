@@ -30,8 +30,8 @@ public class UploadFileController {
     @PostMapping(path = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadFiles(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
                                             @RequestHeader("Folder") String folder,
-                                            @RequestPart List<MultipartFile> documents) {
-        fileService.uploadFiles(authorization, folder, documents);
+                                            @RequestPart List<MultipartFile> files) {
+        fileService.uploadFiles(authorization, folder, files);
         return ResponseEntity.ok().build();
     }
 }

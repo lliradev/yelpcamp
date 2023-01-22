@@ -9,9 +9,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Document implements Serializable {
+public class FileInfo implements Serializable {
     private static final long serialVersionUID = -1972612813946389799L;
-    private String documentFile;
-    private String user;
-    private String password;
+    private String fileName;
+    private String status;
 }
