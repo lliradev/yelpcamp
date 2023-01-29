@@ -1,6 +1,7 @@
 package mx.bluelight.yelpcamp.app.web.rest;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.bluelight.yelpcamp.app.constants.Folder;
 import mx.bluelight.yelpcamp.app.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,7 @@ public class UploadFileController {
 
     @PostMapping(path = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
-                                           @RequestHeader("Folder") String folder,
+                                           @RequestHeader("Folder") Folder folder,
                                            @RequestPart MultipartFile file) {
         fileService.uploadFile(authorization, folder, file);
         return ResponseEntity.ok().build();
@@ -29,7 +30,7 @@ public class UploadFileController {
 
     @PostMapping(path = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadFiles(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
-                                            @RequestHeader("Folder") String folder,
+                                            @RequestHeader("Folder") Folder folder,
                                             @RequestPart List<MultipartFile> files) {
         fileService.uploadFiles(authorization, folder, files);
         return ResponseEntity.ok().build();

@@ -2,6 +2,7 @@ package mx.bluelight.yelpcamp.app.client;
 
 import com.jcraft.jsch.*;
 import lombok.extern.slf4j.Slf4j;
+import mx.bluelight.yelpcamp.app.constants.Folder;
 import mx.bluelight.yelpcamp.app.domain.Authorization;
 import mx.bluelight.yelpcamp.app.exception.CustomBusinessException;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,13 +30,13 @@ public class ScpClient {
     @Value("${app.server.channel}")
     private String channelType;
 
-    public void copyLocalToRemote(Authorization authorization, String folder, MultipartFile document) {
+    public void copyLocalToRemote(Authorization authorization, Folder folder, MultipartFile document) {
         Session session = null;
         ChannelSftp channel = null;
         try {
             session = createSession(authorization);
             channel = (ChannelSftp) session.openChannel(channelType);
-            String destination = String.format("/%s/%s/%s", home, authorization.getUsername(), folder);
+            String destination = destination(authorization.getUsername(), folder);
             channel.connect();
             channel.cd(destination);
             channel.put(document.getInputStream(), document.getOriginalFilename());
@@ -60,7 +61,18 @@ public class ScpClient {
         return session;
     }
 
-    private String executeCommand(Authorization authorization, String folder, MultipartFile document) {
+    private String destination(String username, Folder folder) {
+        String result = switch (folder) {
+            case DOC -> Folder.DOC.getPath();
+            case IMG -> Folder.IMG.getPath();
+            case MSC -> Folder.MSC.getPath();
+            case PUB -> Folder.PUB.getPath();
+            case VID -> Folder.VID.getPath();
+        };
+        return String.format("/%s/%s/%s", home, username, result);
+    }
+
+    private String executeCommand(Authorization authorization, Folder folder, MultipartFile document) {
         Session session = null;
         ChannelExec exec = null;
         try {
@@ -68,7 +80,7 @@ public class ScpClient {
 
             exec = (ChannelExec) session.openChannel("exec");
             exec.setInputStream(null);
-            String destination = String.format("/%s/%s/%s", home, authorization.getUsername(), folder);
+            String destination = destination(authorization.getUsername(), folder);
             String command = String.format("test -e %s/%s && echo \"File exists\" || echo \"File doesn't exist\"", destination, document.getOriginalFilename());
             exec.setCommand(command);
             InputStream inputStream = exec.getInputStream();

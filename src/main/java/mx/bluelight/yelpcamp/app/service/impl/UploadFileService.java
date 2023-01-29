@@ -2,6 +2,7 @@ package mx.bluelight.yelpcamp.app.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.bluelight.yelpcamp.app.client.ScpClient;
+import mx.bluelight.yelpcamp.app.constants.Folder;
 import mx.bluelight.yelpcamp.app.domain.Authorization;
 import mx.bluelight.yelpcamp.app.exception.CustomBusinessException;
 import mx.bluelight.yelpcamp.app.service.FileService;
@@ -23,7 +24,7 @@ class UploadFileService implements FileService {
     private ScpClient scpClient;
 
     @Override
-    public void uploadFile(String authorization, String folder, MultipartFile file) {
+    public void uploadFile(String authorization, Folder folder, MultipartFile file) {
         Optional<Authorization> credentials = retrieveCredentials(authorization);
 
         Authorization auth = credentials.orElseThrow(() -> new CustomBusinessException("Credentials is not present",
@@ -33,7 +34,7 @@ class UploadFileService implements FileService {
     }
 
     @Override
-    public void uploadFiles(String authorization, String folder, List<MultipartFile> files) {
+    public void uploadFiles(String authorization, Folder folder, List<MultipartFile> files) {
         Optional<Authorization> credentials = retrieveCredentials(authorization);
 
         Authorization auth = credentials.orElseThrow(() -> new CustomBusinessException("Credentials is not present",
