@@ -62,13 +62,14 @@ public class ScpClient {
     }
 
     private String destination(String username, Folder folder) {
-        String result = switch (folder) {
-            case DOC -> Folder.DOC.getPath();
-            case IMG -> Folder.IMG.getPath();
-            case MSC -> Folder.MSC.getPath();
-            case PUB -> Folder.PUB.getPath();
-            case VID -> Folder.VID.getPath();
-        };
+//        String result = switch (folder) {
+//            case DOC -> Folder.DOC.getPath();
+//            case IMG -> Folder.IMG.getPath();
+//            case MSC -> Folder.MSC.getPath();
+//            case PUB -> Folder.PUB.getPath();
+//            case VID -> Folder.VID.getPath();
+//        };
+        String result = "";
         return String.format("/%s/%s/%s", home, username, result);
     }
 

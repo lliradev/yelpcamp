@@ -15,8 +15,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -25,51 +26,41 @@ class RestControllerAdvisor {
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<ResponseErrorBase> exceptionHandler(HttpClientErrorException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
-
         responseError.setMessage(ex.getMessage());
-        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-
+        responseError.setTraces(this.mapperStackTraces(ex.getStackTrace()));
         return ResponseEntity.status(ex.getStatusCode()).body(responseError);
     }
 
     @ExceptionHandler(HttpServerErrorException.class)
     public ResponseEntity<ResponseErrorBase> exceptionHandler(HttpServerErrorException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
-
         responseError.setMessage(ex.getMessage());
-        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-
+        responseError.setTraces(this.mapperStackTraces(ex.getStackTrace()));
         return ResponseEntity.status(ex.getStatusCode()).body(responseError);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ResponseErrorBase> exceptionHandler(NullPointerException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
-
         responseError.setMessage(ex.getMessage());
-        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-
+        responseError.setTraces(this.mapperStackTraces(ex.getStackTrace()));
         return ResponseEntity.internalServerError().body(responseError);
     }
 
     @ExceptionHandler(CustomBusinessException.class)
     public ResponseEntity<ResponseBase<Object>> exceptionHandler(CustomBusinessException ex) {
         ResponseBase<Object> response = new ResponseBase<>();
-
         response.setCode(ex.getCode());
         response.setDescription(ex.getMessage());
-
         return ResponseEntity.status(ex.getHttpStatus()).body(response);
     }
 
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<ResponseErrorBase> exceptionHandler(NumberFormatException ex) {
         ResponseErrorBase responseError = new ResponseErrorBase();
-        final String detail = "Failed to convert value of type 'String' to required type number.";
-
-        responseError.setMessage(detail.concat(" ").concat(ex.getMessage()));
-        responseError.setTraces(this.mapperTraces(ex.getStackTrace()));
-
+        final String detail = "Failed to convert value of type 'String' to required type number. ";
+        responseError.setMessage(detail.concat(ex.getMessage()));
+        responseError.setTraces(this.mapperStackTraces(ex.getStackTrace()));
         return ResponseEntity.badRequest().body(responseError);
     }
 
@@ -90,22 +81,21 @@ class RestControllerAdvisor {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ResponseBase<Object>> exceptionHandler(IllegalArgumentException ex) {
         ResponseBase<Object> response = new ResponseBase<>();
-
         response.setCode(ResponseCode.COMMON_ERROR_CODE.intValue());
         response.setDescription(ex.getMessage());
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    private List<StackTrace> mapperTraces(StackTraceElement[] stackTraceElements) {
-        List<StackTrace> traces = new ArrayList<>();
-        for (StackTraceElement element : stackTraceElements) {
-            StackTrace trace = new StackTrace();
-            trace.setClassName(element.getClassName());
-            trace.setMethodName(element.getMethodName());
-            trace.setLineNumber(element.getLineNumber());
-            traces.add(trace);
-        }
-        return traces;
+    private List<StackTrace> mapperStackTraces(StackTraceElement[] stackTraceElements) {
+        return Arrays
+            .stream(stackTraceElements)
+            .map(stackTraceElement -> {
+                StackTrace trace = new StackTrace();
+                trace.setClassName(stackTraceElement.getClassName());
+                trace.setMethodName(stackTraceElement.getMethodName());
+                trace.setLineNumber(stackTraceElement.getLineNumber());
+                return trace;
+            })
+            .collect(Collectors.toList());
     }
 }
